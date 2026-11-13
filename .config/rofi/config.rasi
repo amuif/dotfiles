@@ -1,0 +1,70 @@
+configuration {
+    modi:               "drun,run,window,filebrowser";
+    show-icons:         true;
+    icon-theme:         "Papirus-Dark";
+    font:               "JetBrainsMono Nerd Font 11";
+    terminal:           "kitty";
+    drun-display-format: "{name}";
+    display-drun:       "  Apps";
+    display-run:        "  Run";
+    display-window:     "  Windows";
+    display-filebrowser: "  Files";
+    matching:           "fuzzy";
+    sort:               true;
+    sorting-method:     "fzf";
+    hover-select:       true;
+    me-select-entry:    "";
+    me-accept-entry:    "MousePrimary";
+    kb-cancel:          "Escape,Control+g,Super+r";
+}
+
+@import "~/.local/state/caelestia/theme/colors.rasi"
+
+* {
+    background-color: transparent;
+    text-color:       @fg;
+    margin: 0; padding: 0; spacing: 0;
+}
+
+window {
+    width:            560px;
+    location:         center;
+    anchor:           center;
+    background-color: @bg;
+    border:           2px;
+    border-color:     @accent;
+    border-radius:    20px;
+}
+
+mainbox { padding: 16px; spacing: 12px; children: [ inputbar, mode-switcher, listview ]; }
+
+inputbar {
+    background-color: @bg-alt;
+    border-radius:    14px;
+    padding:          10px 14px;
+    spacing:          10px;
+    children:         [ prompt, entry ];
+}
+prompt  { text-color: @accent; }
+entry   { placeholder: "Search…"; placeholder-color: @fg-dim; cursor: text; }
+
+mode-switcher { spacing: 8px; }
+button {
+    padding: 6px; border-radius: 12px;
+    background-color: @bg-alt; text-color: @fg-dim;
+}
+button selected { background-color: @accent; text-color: @on-accent; }
+
+listview { lines: 8; columns: 1; fixed-height: true; scrollbar: false; spacing: 4px; }
+
+element {
+    padding: 8px 12px; spacing: 12px; border-radius: 12px;
+}
+element normal.normal, element alternate.normal { background-color: transparent; }
+element selected.normal { background-color: @sel; text-color: @on-sel; }
+element normal.urgent, element selected.urgent { text-color: @urgent; }
+element-icon { size: 28px; vertical-align: 0.5; }
+element-text { vertical-align: 0.5; text-color: inherit; }
+
+message  { background-color: @bg-alt; border-radius: 12px; padding: 8px; }
+textbox  { text-color: @fg; }

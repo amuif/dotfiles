@@ -1,0 +1,21 @@
+{
+  "theme": {
+    "enableTerm": true,
+    "enableHypr": true,
+    "enableGtk": true,
+    "enableQt": true,
+    "enableFuzzel": true,
+    "enableBtop": true,
+    "enableCava": true,
+    "enableHtop": false,
+    "enableNvtop": false,
+    "enableDiscord": false,
+    "enableSpicetify": false,
+    "enablePandora": false,
+    "enableWarp": false,
+    "enableChromium": false,
+    "enableZed": false,
+    "iconTheme": "Papirus-Dark",
+    "postHook": "hyprctl reload >/dev/null; pkill -SIGUSR1 -x kitty; S=/usr/share/sddm/themes/caelestia/scripts/sync.sh; [ -x $S ] && sudo -n $S --posthook >/dev/null 2>&1; true"
+  }
+}

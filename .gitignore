@@ -1,0 +1,14 @@
+# Backups and temporary files
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+
+# Sockets and logs
+*.sock
+*.log
+
+# OS metadata
+.DS_Store
+Thumbs.db
