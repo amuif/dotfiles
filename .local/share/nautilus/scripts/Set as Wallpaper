@@ -1,0 +1,24 @@
+#!/bin/sh
+# Nautilus: right-click an image -> Scripts -> Set as Wallpaper
+# Nautilus's built-in "Set as Background" goes through the GNOME wallpaper portal,
+# which Hyprland doesn't have, so it silently does nothing. This uses Caelestia
+# directly (sets the wallpaper and regenerates the colour scheme).
+nl='
+'
+file=""
+IFS="$nl"
+for p in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS; do
+    case "$(file -b --mime-type "$p" 2>/dev/null)" in
+        image/*) file="$p"; break ;;
+    esac
+done
+if [ -z "$file" ]; then
+    notify-send -a Wallpaper "Set as Wallpaper" "Select an image file" 2>/dev/null
+    exit 1
+fi
+if out=$(caelestia wallpaper -f "$file" 2>&1); then
+    notify-send -a Wallpaper -i "$file" "Wallpaper set" "$(basename "$file")" 2>/dev/null
+else
+    notify-send -a Wallpaper -u critical "Couldn't set wallpaper" "$out" 2>/dev/null
+    exit 1
+fi
