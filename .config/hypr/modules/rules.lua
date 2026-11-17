@@ -12,6 +12,8 @@ hl.window_rule({
     no_focus = true,
 })
 
+-- (Oversized floating windows are shrunk/centred by modules/fit.lua)
+
 -- Small utility windows float, centred
 hl.window_rule({
     name  = "float-utils",
