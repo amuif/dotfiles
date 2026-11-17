@@ -148,127 +148,133 @@ Item {
             Layout.preferredHeight: 300
 
             // ---------- Projects overview ----------
-            StyledListView {
-                id: projectsList
-
+            // Created only while shown (layouts inside hidden items report 0 height,
+            // which made the rows stack on top of each other)
+            Loader {
                 anchors.fill: parent
-                visible: !root.inProject
-                clip: true
-                spacing: Tokens.spacing.small
+                active: !root.inProject
 
-                model: ScriptModel {
-                    values: Todo.projectList
-                    objectProp: "id"
-                }
+                sourceComponent: StyledListView {
+                    id: projectsList
 
-                delegate: StyledRect {
-                    id: proj
+                    anchors.fill: parent
+                    clip: true
+                    spacing: Tokens.spacing.small
 
-                    required property var modelData
-                    property bool confirmDelete
-
-                    width: projectsList.width
-                    implicitHeight: projRow.implicitHeight + Tokens.padding.medium * 2
-                    radius: Tokens.rounding.medium
-                    color: Colours.tPalette.m3surfaceContainer
-
-                    StateLayer {
-                        radius: proj.radius
-                        onClicked: root.open(proj.modelData.id)
+                    model: ScriptModel {
+                        values: Todo.projectList
+                        objectProp: "id"
                     }
 
-                    RowLayout {
-                        id: projRow
+                    delegate: StyledRect {
+                        id: proj
 
-                        anchors.fill: parent
-                        anchors.leftMargin: Tokens.padding.large
-                        anchors.rightMargin: Tokens.padding.small
-                        spacing: Tokens.spacing.medium
+                        required property var modelData
+                        property bool confirmDelete
 
-                        StyledRect {
-                            implicitWidth: implicitHeight
-                            implicitHeight: folderIcon.implicitHeight + Tokens.padding.small * 2
-                            radius: Tokens.rounding.full
-                            color: proj.modelData.total > 0 && proj.modelData.open === 0 ? Colours.palette.m3tertiaryContainer : Colours.palette.m3primaryContainer
+                        width: ListView.view.width
+                        implicitHeight: Math.max(64, projRow.implicitHeight + Tokens.padding.medium * 2)
+                        radius: Tokens.rounding.medium
+                        color: Colours.tPalette.m3surfaceContainer
 
-                            MaterialIcon {
-                                id: folderIcon
-
-                                anchors.centerIn: parent
-                                text: proj.modelData.total > 0 && proj.modelData.open === 0 ? "task_alt" : "folder"
-                                fill: 1
-                                color: proj.modelData.total > 0 && proj.modelData.open === 0 ? Colours.palette.m3onTertiaryContainer : Colours.palette.m3onPrimaryContainer
-                            }
+                        StateLayer {
+                            radius: proj.radius
+                            onClicked: root.open(proj.modelData.id)
                         }
 
-                        ColumnLayout {
-                            Layout.fillWidth: true
-                            spacing: Tokens.spacing.extraSmall
+                        RowLayout {
+                            id: projRow
 
-                            StyledText {
-                                Layout.fillWidth: true
-                                text: proj.modelData.name
-                                elide: Text.ElideRight
-                                font: Tokens.font.body.builders.large.weight(Font.Medium).build()
-                            }
+                            anchors.fill: parent
+                            anchors.leftMargin: Tokens.padding.large
+                            anchors.rightMargin: Tokens.padding.small
+                            spacing: Tokens.spacing.medium
 
-                            StyledText {
-                                text: {
-                                    const p = proj.modelData;
-                                    if (p.total === 0)
-                                        return "Empty";
-                                    return p.open === 0 ? `All ${p.total} done` : `${p.open} to do · ${p.done} done`;
-                                }
-                                color: Colours.palette.m3onSurfaceVariant
-                                font: Tokens.font.body.small
-                            }
-
-                            // Progress bar
                             StyledRect {
-                                Layout.fillWidth: true
-                                Layout.topMargin: Tokens.spacing.extraSmall
-                                visible: proj.modelData.total > 0
-                                implicitHeight: 4
+                                implicitWidth: implicitHeight
+                                implicitHeight: folderIcon.implicitHeight + Tokens.padding.small * 2
                                 radius: Tokens.rounding.full
-                                color: Colours.palette.m3surfaceContainerHighest
+                                color: proj.modelData.total > 0 && proj.modelData.open === 0 ? Colours.palette.m3tertiaryContainer : Colours.palette.m3primaryContainer
 
+                                MaterialIcon {
+                                    id: folderIcon
+
+                                    anchors.centerIn: parent
+                                    text: proj.modelData.total > 0 && proj.modelData.open === 0 ? "task_alt" : "folder"
+                                    fill: 1
+                                    color: proj.modelData.total > 0 && proj.modelData.open === 0 ? Colours.palette.m3onTertiaryContainer : Colours.palette.m3onPrimaryContainer
+                                }
+                            }
+
+                            ColumnLayout {
+                                Layout.fillWidth: true
+                                spacing: Tokens.spacing.extraSmall
+
+                                StyledText {
+                                    Layout.fillWidth: true
+                                    text: proj.modelData.name
+                                    elide: Text.ElideRight
+                                    font: Tokens.font.body.builders.large.weight(Font.Medium).build()
+                                }
+
+                                StyledText {
+                                    text: {
+                                        const p = proj.modelData;
+                                        if (p.total === 0)
+                                            return "Empty";
+                                        return p.open === 0 ? `All ${p.total} done` : `${p.open} to do · ${p.done} done`;
+                                    }
+                                    color: Colours.palette.m3onSurfaceVariant
+                                    font: Tokens.font.body.small
+                                }
+
+                                // Progress bar
                                 StyledRect {
-                                    implicitHeight: parent.height
-                                    width: parent.width * (proj.modelData.total > 0 ? proj.modelData.done / proj.modelData.total : 0)
+                                    Layout.fillWidth: true
+                                    Layout.topMargin: Tokens.spacing.extraSmall
+                                    visible: proj.modelData.total > 0
+                                    implicitHeight: 4
                                     radius: Tokens.rounding.full
-                                    color: Colours.palette.m3primary
+                                    color: Colours.palette.m3surfaceContainerHighest
 
-                                    Behavior on width {
-                                        Anim {}
+                                    StyledRect {
+                                        implicitHeight: parent.height
+                                        width: parent.width * (proj.modelData.total > 0 ? proj.modelData.done / proj.modelData.total : 0)
+                                        radius: Tokens.rounding.full
+                                        color: Colours.palette.m3primary
+
+                                        Behavior on width {
+                                            Anim {}
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        // Delete: first click arms, second click deletes (with its tasks)
-                        IconButton {
-                            type: IconButton.Text
-                            icon: proj.confirmDelete ? "delete_forever" : "delete"
-                            onClicked: {
-                                if (proj.confirmDelete)
-                                    Todo.removeProject(proj.modelData.id);
-                                else {
-                                    proj.confirmDelete = true;
-                                    disarm.restart();
+                            // Delete: first click arms, second click deletes (with its tasks)
+                            IconButton {
+                                type: IconButton.Text
+                                icon: proj.confirmDelete ? "delete_forever" : "delete"
+                                onClicked: {
+                                    if (proj.confirmDelete)
+                                        Todo.removeProject(proj.modelData.id);
+                                    else {
+                                        proj.confirmDelete = true;
+                                        disarm.restart();
+                                    }
+                                }
+
+                                Timer {
+                                    id: disarm
+
+                                    interval: 2500
+                                    onTriggered: proj.confirmDelete = false
                                 }
                             }
 
-                            Timer {
-                                id: disarm
-
-                                interval: 2500
-                                onTriggered: proj.confirmDelete = false
+                            MaterialIcon {
+                                text: "chevron_right"
+                                color: Colours.palette.m3onSurfaceVariant
                             }
-                        }
-
-                        MaterialIcon {
-                            text: "chevron_right"
-                            color: Colours.palette.m3onSurfaceVariant
                         }
                     }
                 }
@@ -294,61 +300,67 @@ Item {
             }
 
             // ---------- Tasks inside a project ----------
-            StyledListView {
-                id: tasksList
-
+            // Created only while shown (layouts inside hidden items report 0 height,
+            // which made the rows stack on top of each other)
+            Loader {
                 anchors.fill: parent
-                visible: root.inProject
-                clip: true
-                spacing: Tokens.spacing.small
+                active: root.inProject
 
-                model: ScriptModel {
-                    values: root.inProject ? Todo.tasksFor(root.currentProject) : []
-                    objectProp: "id"
-                }
+                sourceComponent: StyledListView {
+                    id: tasksList
 
-                delegate: StyledRect {
-                    id: task
+                    anchors.fill: parent
+                    clip: true
+                    spacing: Tokens.spacing.small
 
-                    required property var modelData
-
-                    width: tasksList.width
-                    implicitHeight: taskRow.implicitHeight + Tokens.padding.small * 2
-                    radius: Tokens.rounding.medium
-                    color: Colours.tPalette.m3surfaceContainer
-
-                    // Whole row toggles the task
-                    StateLayer {
-                        radius: task.radius
-                        onClicked: Todo.toggle(task.modelData.id)
+                    model: ScriptModel {
+                        values: root.inProject ? Todo.tasksFor(root.currentProject) : []
+                        objectProp: "id"
                     }
 
-                    RowLayout {
-                        id: taskRow
+                    delegate: StyledRect {
+                        id: task
 
-                        anchors.fill: parent
-                        anchors.leftMargin: Tokens.padding.small
-                        anchors.rightMargin: Tokens.padding.small
-                        spacing: Tokens.spacing.small
+                        required property var modelData
 
-                        IconButton {
-                            type: IconButton.Text
-                            icon: task.modelData.done ? "check_circle" : "radio_button_unchecked"
+                        width: ListView.view.width
+                        implicitHeight: Math.max(48, taskRow.implicitHeight + Tokens.padding.small * 2)
+                        radius: Tokens.rounding.medium
+                        color: Colours.tPalette.m3surfaceContainer
+
+                        // Whole row toggles the task
+                        StateLayer {
+                            radius: task.radius
                             onClicked: Todo.toggle(task.modelData.id)
                         }
 
-                        StyledText {
-                            Layout.fillWidth: true
-                            text: task.modelData.text
-                            elide: Text.ElideRight
-                            font.strikeout: task.modelData.done
-                            color: task.modelData.done ? Colours.palette.m3outline : Colours.palette.m3onSurface
-                        }
+                        RowLayout {
+                            id: taskRow
 
-                        IconButton {
-                            type: IconButton.Text
-                            icon: "close"
-                            onClicked: Todo.remove(task.modelData.id)
+                            anchors.fill: parent
+                            anchors.leftMargin: Tokens.padding.small
+                            anchors.rightMargin: Tokens.padding.small
+                            spacing: Tokens.spacing.small
+
+                            IconButton {
+                                type: IconButton.Text
+                                icon: task.modelData.done ? "check_circle" : "radio_button_unchecked"
+                                onClicked: Todo.toggle(task.modelData.id)
+                            }
+
+                            StyledText {
+                                Layout.fillWidth: true
+                                text: task.modelData.text
+                                elide: Text.ElideRight
+                                font.strikeout: task.modelData.done
+                                color: task.modelData.done ? Colours.palette.m3outline : Colours.palette.m3onSurface
+                            }
+
+                            IconButton {
+                                type: IconButton.Text
+                                icon: "close"
+                                onClicked: Todo.remove(task.modelData.id)
+                            }
                         }
                     }
                 }
