@@ -71,20 +71,25 @@ A sleek, glassy, and dynamic Arch Linux desktop environment powered by **Hyprlan
 
 ---
 
-## 🚀 Setup & Installation
+## 🚀 Setup & Installation (new machine)
 
-### 1. Clone the repository
+1. Install Arch with `archinstall` (profile **minimal**, audio **pipewire**, network **NetworkManager**, same username).
+2. Clone and run the bootstrap:
+
 ```bash
+sudo pacman -S --needed git
 git clone https://github.com/amuif/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+~/dotfiles/bootstrap.sh          # everything
+~/dotfiles/bootstrap.sh dev      # or a single step
 ```
 
-### 2. Deploy configs
-```bash
-./install.sh
-```
+Steps: `base drivers yay_install packages aur dotfiles shell gh_setup dev system finish`
 
-### 3. Dependencies & Package Installation
-The `scripts/` directory contains install helpers:
-- `scripts/rice-install.sh`: Pacman & AUR packages (Hyprland, Caelestia, fonts, tools)
-- `scripts/apply-ram-optimizations.sh`: ZRAM and kernel sysctl optimizations
+| File | What |
+| --- | --- |
+| `bootstrap.sh` | Full machine setup (packages, AUR, drivers, dotfiles, gh, dev toolchains, services, ZRAM, SDDM) |
+| `packages/pacman.txt` / `packages/aur.txt` | Package lists |
+| `install.sh` | Only symlinks `.config/*`, `.zshrc`, `.zshenv` |
+| `scripts/setup-automount.sh` | NTFS data partitions (edit UUIDs per machine) |
+
+Neovim config is cloned separately from `amuif/nvim`.

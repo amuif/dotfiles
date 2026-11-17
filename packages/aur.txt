@@ -1,0 +1,6 @@
+caelestia-shell
+caelestia-cli
+caelestia-sddm-locklike-git
+bibata-cursor-theme
+ttf-rubik-vf
+brave-bin

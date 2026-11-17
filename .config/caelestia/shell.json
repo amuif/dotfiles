@@ -40,6 +40,44 @@
         "enabled": true
       }
     ],
+    "statusIcons": [
+      {
+        "id": "lockStatus",
+        "enabled": false
+      },
+      {
+        "id": "audio",
+        "enabled": false
+      },
+      {
+        "id": "microphone",
+        "enabled": false
+      },
+      {
+        "id": "kbLayout",
+        "enabled": false
+      },
+      {
+        "id": "network",
+        "enabled": true
+      },
+      {
+        "id": "bluetooth",
+        "enabled": true
+      },
+      {
+        "id": "battery",
+        "enabled": true
+      },
+      {
+        "id": "nightLight",
+        "enabled": true
+      },
+      {
+        "id": "dnd",
+        "enabled": true
+      }
+    ],
     "clock": {
       "showDate": true,
       "showIcon": false

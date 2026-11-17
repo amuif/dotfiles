@@ -29,7 +29,8 @@ hl.window_rule({
     opacity = "1.0 override 1.0 override", no_blur = true, idle_inhibit = "fullscreen",
 })
 hl.window_rule({ name = "opaque-browser-video", match = { title = ".*(YouTube|Netflix|Twitch).*" }, opacity = "1.0 override 1.0 override" })
-hl.window_rule({ name = "idle-fullscreen",       match = { fullscreen = true }, idle_inhibit = "fullscreen" })
+-- Disabled: let hypridle lock even when a window is fullscreen (video wake locks still hold it off)
+-- hl.window_rule({ name = "idle-fullscreen",       match = { fullscreen = true }, idle_inhibit = "fullscreen" })
 
 ---- Workspace rules: no gaps / borders when a single tiled window
 -- (comment these out if you prefer always-floating look)
