@@ -23,10 +23,8 @@ bind("SHIFT + D", exec("caelestia shell dashboard open screentime")) -- dashboar
 bind("N",         shell("sidebar"))                         -- notifications / quick settings
 bind("U",         shell("utilities"))                       -- utilities panel
 bind("A",         shell("showall"))
-bind("M",         shell("barExpand"))                       -- show/hide extra bar icons
--- Super+Ctrl alone (on release, so Super+Ctrl+arrow resizing doesn't trigger it): pin/unpin the bar
-hl.bind("SUPER + Control_L", shell("toggleBar"), { release = true })
-hl.bind("CTRL + Super_L",    shell("toggleBar"), { release = true })
+bind("M",         shell("barExpand"))                       -- show bar + extra icons
+bind("Z",         shell("toggleBar"))                       -- pin/unpin the auto-hiding bar
 bind("Escape",    shell("session"))                         -- power menu
 bind("L",         shell("lock"))                            -- lock screen
 bind("SHIFT + V", exec("caelestia clipboard"))              -- clipboard history
