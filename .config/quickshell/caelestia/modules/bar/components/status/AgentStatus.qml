@@ -1,17 +1,20 @@
 import QtQuick
+import QtQuick.Effects
+import Quickshell
 import Caelestia.Config
 import qs.components
 import qs.components.controls
 import qs.services
 
-// Bar ring: highest 5h-window usage across local AI agents (see AgentUsage)
+// Bar ring: Claude logo (monochrome) inside a ring showing Claude's 5h session usage
 Item {
     id: root
 
     required property color colour
 
-    readonly property real ratio: AgentUsage.maxRatio
-    readonly property color level: ratio >= 0.9 ? Colours.palette.m3error : ratio >= 0.7 ? Colours.palette.m3tertiary : colour
+    readonly property real ratio: AgentUsage.claude?.ratio ?? 0
+    readonly property color mono: Colours.palette.m3onSurface
+    readonly property color level: ratio >= 0.9 ? Colours.palette.m3error : ratio >= 0.7 ? Colours.palette.m3tertiary : mono
 
     implicitWidth: Tokens.font.icon.medium.pointSize * 1.45
     implicitHeight: implicitWidth
@@ -22,18 +25,28 @@ Item {
         strokeWidth: 2
         spacing: 2
         fgColour: root.level
-        bgColour: Qt.alpha(root.colour, 0.25)
+        bgColour: Qt.alpha(root.mono, 0.2)
 
         Behavior on value {
             Anim {}
         }
     }
 
-    MaterialIcon {
+    // Plain mipmapped image + MultiEffect tint: crisp at small sizes (ColouredIcon blurred it)
+    Image {
         anchors.centerIn: parent
-        text: "smart_toy"
-        color: root.level
-        fill: AgentUsage.anyRunning ? 1 : 0
-        fontStyle: Tokens.font.icon.builders.small.scale(0.8).build()
+        source: `file://${Quickshell.shellPath("assets/agents/claude.png")}`
+        width: Math.round(root.implicitWidth * 0.55)
+        height: width
+        sourceSize.width: width * 2
+        sourceSize.height: height * 2
+        smooth: true
+        mipmap: true
+        layer.enabled: true
+        layer.effect: MultiEffect {
+            colorization: 1
+            colorizationColor: root.mono
+            brightness: 1
+        }
     }
 }

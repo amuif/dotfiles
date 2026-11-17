@@ -51,7 +51,7 @@ StyledRect {
 
     clip: true
     implicitHeight: Tokens.sizes.bar.innerWidth
-    implicitWidth: iconColumn.implicitWidth + Tokens.padding.large * 2
+    implicitWidth: iconColumn.implicitWidth + Tokens.padding.large // no left padding: background starts at the first icon
 
     RowLayout {
         id: iconColumn

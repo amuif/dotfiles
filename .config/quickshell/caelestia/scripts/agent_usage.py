@@ -11,7 +11,8 @@ Detected agents
 No agent stores the plan quota locally, so "window" is the current 5-hour
 block (same rule Claude uses: starts at the first message, rounded down to the
 hour, lasts 5h) and "ratio" compares it with your busiest past 5-hour block
-(or a floor: 2M fresh tokens / 50 prompts, whichever is larger).
+(or a floor: 2M fresh tokens / 50 prompts, whichever is larger). "week.ratio"
+does the same for the last 7 days vs your busiest 7 days (floor 15M / 300).
 """
 
 import json
@@ -59,7 +60,7 @@ def blocks(events):
     return out
 
 
-def summarize(events, unit, floor):
+def summarize(events, unit, floor, week_floor):
     events.sort()
     t = now_ms()
     bl = blocks(events)
@@ -70,6 +71,16 @@ def summarize(events, unit, floor):
     week0 = t - 7 * 24 * HOUR_MS
     today = [w for ts, w in events if ts >= today0]
     week = [w for ts, w in events if ts >= week0]
+    # Busiest past 7 days: rolling 7-day sums over daily totals, ending before today
+    DAY = 24 * HOUR_MS
+    daily = {}
+    for ts, w in events:
+        daily[(ts - today0) // DAY] = daily.get((ts - today0) // DAY, 0) + w
+    week_peak = 0
+    for end in range(-1, -LOOKBACK_DAYS - 1, -1):
+        week_peak = max(week_peak, sum(daily.get(d, 0) for d in range(end - 6, end + 1)))
+    week_ref = max(week_peak, week_floor)
+    week_total = sum(week)
     window = None
     if active:
         window = {
@@ -89,7 +100,7 @@ def summarize(events, unit, floor):
         "reference": ref,
         "ratio": ratio,
         "today": {"total": sum(today), "count": len(today)},
-        "week": {"total": sum(week), "count": len(week)},
+        "week": {"total": week_total, "count": len(week), "reference": week_ref, "ratio": min(1.0, week_total / week_ref) if week_ref else 0.0},
         "lastActivity": events[-1][0] if events else None,
     }
 
@@ -144,8 +155,8 @@ def claude():
                 m = msg.get("model")
                 if m and not m.startswith("<") and ts > model_ts:
                     model, model_ts = m, ts
-    s = summarize(events, "tokens", 2_000_000)
-    s.update({"id": "claude", "name": "Claude Code", "icon": "smart_toy", "running": running("claude"), "model": model})
+    s = summarize(events, "tokens", 2_000_000, 15_000_000)
+    s.update({"id": "claude", "name": "Claude Code", "icon": "smart_toy", "logo": "claude.png", "running": running("claude"), "model": model})
     return s
 
 
@@ -170,8 +181,8 @@ def antigravity():
                     events.append((int(ts), 1))
     except OSError:
         pass
-    s = summarize(events, "prompts", 50)
-    s.update({"id": "antigravity", "name": "Antigravity", "icon": "auto_awesome", "running": running("agy"), "model": None})
+    s = summarize(events, "prompts", 50, 300)
+    s.update({"id": "antigravity", "name": "Gemini", "icon": "auto_awesome", "logo": "gemini.svg", "running": running("agy"), "model": None})
     return s
 
 

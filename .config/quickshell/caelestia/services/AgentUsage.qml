@@ -13,8 +13,14 @@ Singleton {
     property var agents: []
     property real updated: 0
 
-    // Highest window usage across agents (0..1), drives the ring
+    // Claude is the primary agent (bar ring); the rest show under "Other agents"
+    readonly property var claude: agents.find(a => a.id === "claude") ?? null
+    readonly property var others: agents.filter(a => a.id !== "claude")
     readonly property real maxRatio: agents.reduce((m, a) => Math.max(m, a.ratio ?? 0), 0)
+
+    function logo(agent: var): string {
+        return agent?.logo ? `file://${Quickshell.shellPath(`assets/agents/${agent.logo}`)}` : "";
+    }
     readonly property bool anyRunning: agents.some(a => a.running)
 
     function refresh(): void {

@@ -260,7 +260,8 @@ StyledWindow {
 
             panel: panels.popoutsWrapper
             collapseWhenClosed: true
-            openHeight: panels.popouts.height
+            // Closed popouts slide up behind the bar; only count what shows below it
+            openHeight: panels.popoutsWrapper.y + panels.popouts.y + panels.popouts.height
             deformAmount: panels.popouts.isDetached ? 0.05 : panels.popouts.hasCurrent ? 0.15 : 0.1
             y: panels.popoutsWrapper.y + panels.popouts.y + bar.implicitHeight - panels.popouts.height * extraWidth
             implicitHeight: panels.popouts.height * (1 + extraWidth)

@@ -43,7 +43,9 @@ RowLayout {
             }
             if (!it.visible || it.width <= 0)
                 continue;
-            const l = it.x + it.centerShift - islandPadding;
+            // Right island hugs the first status icon (the agents ring) on its left edge
+            const lpad = it.entryId === "statusIcons" ? 0 : islandPadding;
+            const l = it.x + it.centerShift - lpad;
             const r = it.x + it.centerShift + it.width + islandPadding;
             cur = cur ? { x: cur.x, r: r } : { x: l, r: r };
         }
