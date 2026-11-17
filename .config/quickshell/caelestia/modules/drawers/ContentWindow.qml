@@ -199,6 +199,7 @@ StyledWindow {
 
             panel: panels.dashboard
             deformAmount: 0.1
+            collapseWhenClosed: true
         }
 
         PanelBg {
@@ -258,6 +259,8 @@ StyledWindow {
             property real extraWidth: panels.popouts.isDetached ? 0 : 0.2
 
             panel: panels.popoutsWrapper
+            collapseWhenClosed: true
+            openHeight: panels.popouts.height
             deformAmount: panels.popouts.isDetached ? 0.05 : panels.popouts.hasCurrent ? 0.15 : 0.1
             y: panels.popoutsWrapper.y + panels.popouts.y + bar.implicitHeight - panels.popouts.height * extraWidth
             implicitHeight: panels.popouts.height * (1 + extraWidth)
@@ -359,10 +362,18 @@ StyledWindow {
         required property Item panel
         property real deformAmount: 0.15
 
+        // Islands bar: closed top drawers slide up behind the bar, which used to hide
+        // them. With transparent gaps they'd show as one wide band, so shrink such
+        // drawers towards their centre as they close instead.
+        property bool collapseWhenClosed
+        // How much of the drawer is actually showing below the bar (closed drawers slide up behind it)
+        property real openHeight: panel.y + panel.height
+        readonly property real openFactor: collapseWhenClosed ? Math.min(1, Math.max(0, openHeight / 60)) : 1
+
         group: blobGroup
-        x: panel.x + root.borderThickness
+        x: panel.x + root.borderThickness + panel.width * (1 - openFactor) / 2
         y: panel.y + bar.implicitHeight
-        implicitWidth: panel.width
+        implicitWidth: panel.width * openFactor
         implicitHeight: panel.height
         radius: Tokens.rounding.extraLarge
         deformScale: (deformAmount * Config.appearance.deformScale) / 10000
