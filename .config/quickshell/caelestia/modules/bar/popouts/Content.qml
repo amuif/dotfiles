@@ -108,6 +108,11 @@ Item {
         }
 
         Popout {
+            name: "agents"
+            sourceComponent: AgentsPopout {}
+        }
+
+        Popout {
             name: "audio"
             sourceComponent: AudioPopout {
                 popouts: root.popouts

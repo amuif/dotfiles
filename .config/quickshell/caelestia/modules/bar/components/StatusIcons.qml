@@ -133,6 +133,14 @@ StyledRect {
                     }
                 }
                 DelegateChoice {
+                    roleValue: "agents"
+                    delegate: EntryWrapper {
+                        AgentStatus {
+                            colour: root.colour
+                        }
+                    }
+                }
+                DelegateChoice {
                     roleValue: "bluetooth"
                     delegate: EntryWrapper {
                         BluetoothStatus {

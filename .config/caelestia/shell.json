@@ -70,6 +70,10 @@
         "enabled": true
       },
       {
+        "id": "agents",
+        "enabled": true
+      },
+      {
         "id": "network",
         "enabled": true
       },
