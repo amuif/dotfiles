@@ -64,26 +64,7 @@ Item {
 
             RowLayout {
                 spacing: Tokens.spacing.medium
-                visible: cpuCard.active || gpuCard.active
-
-                WrappedLoader {
-                    id: cpuCard
-
-                    active: Config.dashboard.performance.showCpu
-
-                    sourceComponent: HeroCard {
-                        icon: "memory"
-                        label: Tr.tr("CPU")
-                        subLabel: Cpu.name
-                        usage: Cpu.percentage
-                        temperature: Cpu.temperature
-                        accent: Colours.palette.m3primary
-
-                        ServiceRef {
-                            service: Cpu
-                        }
-                    }
-                }
+                visible: gpuCard.active
 
                 WrappedLoader {
                     id: gpuCard
@@ -107,13 +88,13 @@ Item {
 
             RowLayout {
                 spacing: Tokens.spacing.medium
-                visible: storageCard.active || networkCard.active || memoryCard.active
+                visible: storageCard.active || networkCard.active || memoryCard.active || cpuCard.active
 
                 WrappedLoader {
-                    id: storageCard
+                    id: memoryCard
 
-                    active: Config.dashboard.performance.showStorage
-                    sourceComponent: StorageCard {}
+                    active: Config.dashboard.performance.showMemory
+                    sourceComponent: MemoryCard {}
                 }
 
                 WrappedLoader {
@@ -122,12 +103,30 @@ Item {
                     active: Config.dashboard.performance.showNetwork
                     sourceComponent: NetworkCard {}
                 }
+                WrappedLoader {
+                    id: cpuCard
+
+                    active: Config.dashboard.performance.showCpu
+
+                    sourceComponent: HeroCard {
+                        icon: "memory"
+                        label: Tr.tr("CPU")
+                        subLabel: Cpu.name
+                        usage: Cpu.percentage
+                        temperature: Cpu.temperature
+                        accent: Colours.palette.m3primary
+
+                        ServiceRef {
+                            service: Cpu
+                        }
+                    }
+                }
 
                 WrappedLoader {
-                    id: memoryCard
+                    id: storageCard
 
-                    active: Config.dashboard.performance.showMemory
-                    sourceComponent: MemoryCard {}
+                    active: Config.dashboard.performance.showStorage
+                    sourceComponent: StorageCard {}
                 }
             }
         }

@@ -95,5 +95,17 @@
   },
   "border": {
     "thickness": 3
+  },
+  "dashboard": {
+    "showMedia": false,
+    "showWeather": false,
+    "performance": {
+      "showCpu": true,
+      "showMemory": true,
+      "showNetwork": true,
+      "showGpu": false,
+      "showStorage": false,
+      "showBattery": false
+    }
   }
 }
