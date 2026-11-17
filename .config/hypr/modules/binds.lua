@@ -24,7 +24,7 @@ bind("N",         shell("sidebar"))                         -- notifications / q
 bind("U",         shell("utilities"))                       -- utilities panel
 bind("A",         shell("showall"))
 bind("M",         shell("barExpand"))                       -- show bar + extra icons
-bind("Z",         shell("toggleBar"))                       -- pin/unpin the auto-hiding bar
+bind("Z",         shell("toggleBar"))                       -- hide/show the bar
 bind("Escape",    shell("session"))                         -- power menu
 bind("L",         shell("lock"))                            -- lock screen
 bind("SHIFT + V", exec("caelestia clipboard"))              -- clipboard history

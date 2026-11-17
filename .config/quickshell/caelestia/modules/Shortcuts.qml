@@ -37,10 +37,10 @@ Scope {
     CustomShortcut {
         // qmllint enable unresolved-type
         name: "toggleBar"
-        description: "Pin/unpin the auto-hiding bar"
+        description: "Hide/show the bar (shown by default; hover the top edge while hidden)"
         onPressed: {
             const screenState = ShellState.forActive();
-            screenState.bar = !screenState.bar;
+            screenState.barHidden = !screenState.barHidden;
         }
     }
 

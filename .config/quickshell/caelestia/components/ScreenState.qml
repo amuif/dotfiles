@@ -14,6 +14,8 @@ PersistentProperties {
 
     // Bar: show the extra (hidden) right-side icons — toggled with Super+M
     property bool barExpanded
+    // Bar: hidden by the user (Super+Z); shown by default
+    property bool barHidden
 
     // Dashboard state
     property int dashboardTab
