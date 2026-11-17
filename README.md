@@ -83,7 +83,9 @@ git clone https://github.com/amuif/dotfiles.git ~/dotfiles
 ~/dotfiles/bootstrap.sh dev      # or a single step
 ```
 
-Steps: `base drivers yay_install packages aur dotfiles shell gh_setup dev system finish`
+Steps: `base drivers yay_install packages aur dotfiles shell dev system finish`
+
+After rebooting into Hyprland (needs a browser): `~/dotfiles/bootstrap.sh gh_setup` — GitHub login, git identity, SSH key.
 
 | File | What |
 | --- | --- |

@@ -124,7 +124,7 @@ shell() {
   [[ "$(getent passwd "$USER" | cut -d: -f7)" == /usr/bin/zsh ]] || chsh -s /usr/bin/zsh
 }
 
-# ------------------------------------------------------------------ 7. GitHub
+# ------------------------------------------------------------------ 7. GitHub (optional, run later)
 gh_setup() {
   c "GitHub CLI + git"
   if ! gh auth status >/dev/null 2>&1; then
@@ -225,6 +225,9 @@ EOF
 finish() {
   c "Things this script can't do for you"
   cat <<'EOF'
+  • GitHub (once you have a browser, e.g. after reboot into Hyprland):
+        ~/dotfiles/bootstrap.sh gh_setup
+    → logs gh in, sets git name/email, makes + uploads an SSH key.
   • Log in to the apps: claude, agy, Telegram, Brave sync.
   • Data partitions: scripts/setup-automount.sh has the OLD machine's NTFS UUIDs —
     edit the UUIDs (lsblk -f) before running it with sudo.
@@ -234,7 +237,8 @@ EOF
 }
 
 # ------------------------------------------------------------------ runner
-STEPS=(base drivers yay_install packages aur dotfiles shell gh_setup dev system finish)
+# gh_setup is NOT in the default run (needs a browser) — run it later: ./bootstrap.sh gh_setup
+STEPS=(base drivers yay_install packages aur dotfiles shell dev system finish)
 
 run() {
   local s=$1
