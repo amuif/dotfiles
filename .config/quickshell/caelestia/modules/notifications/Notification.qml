@@ -382,10 +382,36 @@ StyledRect {
                 font: Tokens.font.body.small
             }
 
+            // Dismiss button, top-right (Super+, dismisses the newest popup too)
+            Item {
+                id: closeBtn
+
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.topMargin: -Tokens.padding.extraSmall
+
+                implicitWidth: closeIcon.implicitHeight
+                implicitHeight: closeIcon.implicitHeight
+
+                StateLayer {
+                    radius: Tokens.rounding.full
+                    color: root.modelData.urgency === NotificationUrgency.Critical ? Colours.palette.m3onSecondaryContainer : Colours.palette.m3onSurface
+                    onClicked: root.modelData.close()
+                }
+
+                MaterialIcon {
+                    id: closeIcon
+
+                    anchors.centerIn: parent
+                    text: "close"
+                    fontStyle: Tokens.font.icon.medium
+                }
+            }
+
             Item {
                 id: expandBtn
 
-                anchors.right: parent.right
+                anchors.right: closeBtn.left
                 anchors.top: parent.top
                 anchors.topMargin: -Tokens.padding.extraSmall
 

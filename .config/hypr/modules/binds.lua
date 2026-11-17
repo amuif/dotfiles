@@ -21,6 +21,7 @@ bind("D",         shell("dashboard"))                       -- dashboard (media,
 bind("SHIFT + T", exec("caelestia shell dashboard open tasks"))      -- dashboard: task list
 bind("SHIFT + D", exec("caelestia shell dashboard open screentime")) -- dashboard: screen time
 bind("N",         shell("sidebar"))                         -- notifications / quick settings
+bind("comma",     shell("dismissNotif"))                    -- dismiss newest notification
 bind("U",         shell("utilities"))                       -- utilities panel
 bind("A",         shell("showall"))
 bind("M",         shell("barExpand"))                       -- show bar + extra icons

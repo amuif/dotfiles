@@ -248,6 +248,18 @@ Singleton {
     // qmllint disable unresolved-type
     CustomShortcut {
         // qmllint enable unresolved-type
+        name: "dismissNotif"
+        description: "Dismiss the newest notification popup"
+        onPressed: {
+            const notif = root.popups[0] ?? root.notClosed[0];
+            if (notif)
+                notif.close();
+        }
+    }
+
+    // qmllint disable unresolved-type
+    CustomShortcut {
+        // qmllint enable unresolved-type
         name: "clearNotifs"
         description: "Clear all notifications"
         onPressed: {
