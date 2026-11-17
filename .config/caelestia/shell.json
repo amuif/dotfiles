@@ -1,7 +1,7 @@
 {
   "bar": {
-    "persistent": true,
-    "showOnHover": false,
+    "persistent": false,
+    "showOnHover": true,
     "entries": [
       {
         "id": "logo",

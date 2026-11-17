@@ -36,6 +36,17 @@ Scope {
     // qmllint disable unresolved-type
     CustomShortcut {
         // qmllint enable unresolved-type
+        name: "toggleBar"
+        description: "Pin/unpin the auto-hiding bar"
+        onPressed: {
+            const screenState = ShellState.forActive();
+            screenState.bar = !screenState.bar;
+        }
+    }
+
+    // qmllint disable unresolved-type
+    CustomShortcut {
+        // qmllint enable unresolved-type
         name: "barExpand"
         description: "Show/hide the extra bar icons"
         onPressed: {
