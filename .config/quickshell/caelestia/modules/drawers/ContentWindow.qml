@@ -256,7 +256,7 @@ StyledWindow {
             id: popoutBg
 
             // Extra height to prevent horizontal movement deformation partially detaching panel from bar (top-bar patch)
-            property real extraWidth: panels.popouts.isDetached ? 0 : 0.2
+            property real extraWidth: 0 // islands bar: no overlap into the bar row (was 0.2), so the open popout doesn't widen the island
 
             panel: panels.popoutsWrapper
             collapseWhenClosed: true
