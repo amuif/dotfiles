@@ -5,6 +5,8 @@ import qs.components
 import qs.components.filedialog
 import qs.services
 
+// Trimmed dashboard: calendar + media only.
+// Removed: weather, user card, date/time, CPU/RAM resources (originals in dash/).
 GridLayout {
     id: root
 
@@ -15,50 +17,9 @@ GridLayout {
     columnSpacing: Tokens.spacing.medium
 
     Rect {
-        Layout.column: 2
-        Layout.columnSpan: 3
-        Layout.preferredWidth: Tokens.sizes.dashboard.userWidth
-        Layout.fillHeight: true
-
-        radius: Tokens.rounding.extraLarge
-
-        User {
-            id: user
-
-            screenState: root.screenState
-            facePicker: root.facePicker
-        }
-    }
-
-    Rect {
         Layout.row: 0
-        Layout.columnSpan: 2
-        Layout.preferredWidth: Tokens.sizes.dashboard.weatherWidth
-        Layout.preferredHeight: weather.implicitHeight
-
-        radius: Tokens.rounding.extraLarge * 1.5
-
-        SmallWeather {
-            id: weather
-        }
-    }
-
-    Rect {
-        Layout.row: 1
-        Layout.preferredWidth: dateTime.implicitWidth
-        Layout.fillHeight: true
-
-        radius: Tokens.rounding.large
-
-        DateTime {
-            id: dateTime
-        }
-    }
-
-    Rect {
-        Layout.row: 1
-        Layout.column: 1
-        Layout.columnSpan: 3
+        Layout.column: 0
+        Layout.preferredWidth: Tokens.sizes.dashboard.userWidth
         Layout.fillWidth: true
         Layout.preferredHeight: calendar.implicitHeight
 
@@ -72,22 +33,8 @@ GridLayout {
     }
 
     Rect {
-        Layout.row: 1
-        Layout.column: 4
-        Layout.preferredWidth: resources.implicitWidth
-        Layout.fillHeight: true
-
-        radius: Tokens.rounding.large
-
-        Resources {
-            id: resources
-        }
-    }
-
-    Rect {
         Layout.row: 0
-        Layout.column: 5
-        Layout.rowSpan: 2
+        Layout.column: 1
         Layout.preferredWidth: media.implicitWidth
         Layout.fillHeight: true
 
