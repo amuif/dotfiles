@@ -13,13 +13,13 @@ Item {
     readonly property real ratio: AgentUsage.maxRatio
     readonly property color level: ratio >= 0.9 ? Colours.palette.m3error : ratio >= 0.7 ? Colours.palette.m3tertiary : colour
 
-    implicitWidth: Tokens.font.icon.medium.pointSize * 1.9
+    implicitWidth: Tokens.font.icon.medium.pointSize * 1.45
     implicitHeight: implicitWidth
 
     CircularProgress {
         anchors.fill: parent
         value: root.ratio
-        strokeWidth: 3
+        strokeWidth: 2
         spacing: 2
         fgColour: root.level
         bgColour: Qt.alpha(root.colour, 0.25)
@@ -34,6 +34,6 @@ Item {
         text: "smart_toy"
         color: root.level
         fill: AgentUsage.anyRunning ? 1 : 0
-        fontStyle: Tokens.font.icon.builders.small.build()
+        fontStyle: Tokens.font.icon.builders.small.scale(0.8).build()
     }
 }
