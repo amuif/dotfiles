@@ -23,10 +23,22 @@ have() { command -v "$1" >/dev/null 2>&1; }
 pkgs() { grep -vE '^\s*(#|$)' "$1"; }
 
 # ------------------------------------------------------------------ preflight
+# Checks what the script really needs: HTTPS to the mirrors / AUR / GitHub.
+# (ping is often blocked by routers/firewalls, so it's only a last resort.)
+online() {
+  [[ -n "${NO_NET_CHECK:-}" ]] && return 0
+  local u
+  for u in https://archlinux.org https://aur.archlinux.org https://github.com; do
+    curl -fsS -o /dev/null --max-time 10 --retry 2 "$u" 2>/dev/null && return 0
+  done
+  ping -c2 -W5 1.1.1.1 >/dev/null 2>&1
+}
+
 preflight() {
   [[ $EUID -eq 0 ]] && { echo "Run as your normal user, not root."; exit 1; }
   [[ -f /etc/arch-release ]] || { echo "This script is for Arch Linux."; exit 1; }
-  ping -c1 -W3 archlinux.org >/dev/null 2>&1 || { echo "No internet. Connect first (nmtui / iwctl)."; exit 1; }
+  online || { echo "No internet (couldn't reach archlinux.org, aur.archlinux.org or github.com over HTTPS)."
+               echo "Connect first (nmtui / iwctl). Skip this check with: NO_NET_CHECK=1 $0"; exit 1; }
   sudo -v || exit 1
   # keep sudo alive for the whole run (AUR builds take a while)
   while true; do sudo -n true; sleep 50; kill -0 "$$" || exit; done 2>/dev/null &
