@@ -17,6 +17,10 @@ StyledRect {
 
     readonly property int spacing: Tokens.spacing.medium
 
+    // Icons only shown when the bar is expanded (Super+M)
+    property bool expanded
+    readonly property var extraIcons: ["bluetooth", "nightLight", "dnd", "audio", "microphone", "kbLayout"]
+
     // Index of the first/last entry that isn't collapsed, for edge margin gating
     readonly property int firstPresent: {
         const values = model.values;
@@ -37,6 +41,8 @@ StyledRect {
     function collapsed(entry: var): bool {
         if (entry.id === "lockStatus")
             return !Hypr.capsLock && !Hypr.numLock;
+        if (extraIcons.includes(entry.id))
+            return !expanded;
         return false;
     }
 
@@ -176,6 +182,7 @@ StyledRect {
         default property Item item
         property string name: modelData.id.toLowerCase()
 
+        visible: root.extraIcons.includes(modelData.id) ? present : true
         Layout.leftMargin: Math.round(topGap)
         Layout.rightMargin: Math.round(bottomGap)
         Layout.alignment: Qt.AlignVCenter

@@ -20,6 +20,40 @@ RowLayout {
     readonly property int vPadding: Tokens.padding.large
     readonly property int hPadding: Tokens.padding.large
 
+    // Entries only shown when the bar is expanded (Super+M)
+    readonly property var extraEntries: ["tray", "power", "dnd", "nightLight"]
+    readonly property bool expanded: screenState.barExpanded
+
+    // Background "islands": one per run of entries between spacers, in bar coords
+    readonly property int islandPadding: Tokens.padding.medium
+    property var islands: []
+
+    function updateIslands(): void {
+        const out = [];
+        let cur = null;
+        for (let i = 0; i < repeater.count; i++) {
+            const it = repeater.itemAt(i) as EntryWrapper;
+            if (!it)
+                continue;
+            if (it.entryId === "spacer") {
+                if (cur)
+                    out.push(cur);
+                cur = null;
+                continue;
+            }
+            if (!it.visible || it.width <= 0)
+                continue;
+            const l = it.x + it.centerShift - islandPadding;
+            const r = it.x + it.centerShift + it.width + islandPadding;
+            cur = cur ? { x: cur.x, r: r } : { x: l, r: r };
+        }
+        if (cur)
+            out.push(cur);
+        islands = out.map(i => ({ x: i.x, width: i.r - i.x }));
+    }
+
+    onWidthChanged: Qt.callLater(updateIslands)
+
     function closeTray(): void {
         if (!Config.bar.tray.compact)
             return;
@@ -170,6 +204,7 @@ RowLayout {
                 delegate: EntryWrapper {
                     StatusIcons {
                         objectName: "taskbarStatusIcons"
+                        expanded: root.expanded
                     }
                 }
             }
@@ -206,6 +241,17 @@ RowLayout {
         required property int index
         default property Item item
         readonly property string entryId: modelData.id
+
+        visible: !root.extraEntries.includes(entryId) || root.expanded
+
+        // Keep the clock dead-centre on screen no matter how wide the side groups get
+        readonly property real centerShift: entryId === "clock" ? Math.round((root.width - width) / 2 - x) : 0
+        transform: Translate { x: centerShift }
+        onCenterShiftChanged: Qt.callLater(root.updateIslands)
+        onXChanged: Qt.callLater(root.updateIslands)
+        onWidthChanged: Qt.callLater(root.updateIslands)
+        onVisibleChanged: Qt.callLater(root.updateIslands)
+        Component.onCompleted: Qt.callLater(root.updateIslands)
 
         Layout.leftMargin: index === 0 ? root.hPadding : 0
         Layout.rightMargin: index === repeater.count - 1 ? root.hPadding : 0

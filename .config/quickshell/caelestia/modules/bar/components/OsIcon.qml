@@ -23,7 +23,19 @@ Item {
     Loader {
         asynchronous: true
         anchors.centerIn: parent
-        sourceComponent: SysInfo.isDefaultLogo ? caelestiaLogo : distroIcon
+        sourceComponent: customIcon
+    }
+
+    // Custom bar logo (replaces the distro logo). Any Material Symbols name works.
+    Component {
+        id: customIcon
+
+        MaterialIcon {
+            text: "deployed_code"
+            color: Colours.palette.m3primary
+            fill: 1
+            fontStyle: Tokens.font.icon.medium
+        }
     }
 
     Component {

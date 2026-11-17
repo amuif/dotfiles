@@ -12,6 +12,9 @@ PersistentProperties {
     property bool utilities
     property bool sidebar
 
+    // Bar: show the extra (hidden) right-side icons — toggled with Super+M
+    property bool barExpanded
+
     // Dashboard state
     property int dashboardTab
     property bool dashboardInput

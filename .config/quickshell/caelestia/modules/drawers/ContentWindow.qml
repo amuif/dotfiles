@@ -170,8 +170,28 @@ StyledWindow {
             radius: root.borderRounding
             borderLeft: root.borderThickness - anchors.margins - root.sdfBorderOffset
             borderRight: root.borderThickness - anchors.margins - root.sdfBorderOffset
-            borderTop: bar.implicitHeight - anchors.margins - root.sdfBorderOffset
+            // Islands bar: the top edge is a thin border like the others; the bar's
+            // background comes from the island blobs below
+            borderTop: root.borderThickness - anchors.margins - root.sdfBorderOffset
             borderBottom: root.borderThickness - anchors.margins - root.sdfBorderOffset
+        }
+
+        // Bar islands: logo+workspaces / clock / status icons. Gaps stay transparent.
+        Repeater {
+            model: bar.islands.length
+
+            BlobRect {
+                required property int index
+                readonly property var island: bar.islands[index] ?? { x: 0, width: 0 }
+
+                group: blobGroup
+                x: island.x
+                y: 0
+                implicitWidth: island.width
+                implicitHeight: bar.implicitHeight
+                radius: Tokens.rounding.large
+                deformScale: (0.05 * Config.appearance.deformScale) / 10000
+            }
         }
 
         PanelBg {

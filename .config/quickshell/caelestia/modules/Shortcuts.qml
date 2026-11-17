@@ -36,6 +36,17 @@ Scope {
     // qmllint disable unresolved-type
     CustomShortcut {
         // qmllint enable unresolved-type
+        name: "barExpand"
+        description: "Show/hide the extra bar icons"
+        onPressed: {
+            const screenState = ShellState.forActive();
+            screenState.barExpanded = !screenState.barExpanded;
+        }
+    }
+
+    // qmllint disable unresolved-type
+    CustomShortcut {
+        // qmllint enable unresolved-type
         name: "dashboard"
         description: "Toggle dashboard"
         onPressed: {

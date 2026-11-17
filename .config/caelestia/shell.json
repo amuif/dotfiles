@@ -32,11 +32,11 @@
         "enabled": true
       },
       {
-        "id": "statusIcons",
+        "id": "power",
         "enabled": true
       },
       {
-        "id": "power",
+        "id": "statusIcons",
         "enabled": true
       }
     ],
@@ -58,15 +58,7 @@
         "enabled": false
       },
       {
-        "id": "network",
-        "enabled": true
-      },
-      {
         "id": "bluetooth",
-        "enabled": true
-      },
-      {
-        "id": "battery",
         "enabled": true
       },
       {
@@ -75,6 +67,14 @@
       },
       {
         "id": "dnd",
+        "enabled": true
+      },
+      {
+        "id": "network",
+        "enabled": true
+      },
+      {
+        "id": "battery",
         "enabled": true
       }
     ],

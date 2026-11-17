@@ -26,6 +26,9 @@ Item {
     readonly property bool shouldBeVisible: !fullscreen && !disabled && (Config.bar.persistent || screenState.bar || isHovered)
     property bool isHovered
 
+    // Island backgrounds (x/width in window coords), drawn by the drawers window
+    readonly property var islands: (content.item as Bar)?.islands ?? []
+
     function closeTray(): void {
         (content.item as Bar)?.closeTray();
     }

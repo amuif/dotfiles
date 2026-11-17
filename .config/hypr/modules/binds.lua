@@ -23,6 +23,7 @@ bind("SHIFT + D", exec("caelestia shell dashboard open screentime")) -- dashboar
 bind("N",         shell("sidebar"))                         -- notifications / quick settings
 bind("U",         shell("utilities"))                       -- utilities panel
 bind("A",         shell("showall"))
+bind("M",         shell("barExpand"))                       -- show/hide extra bar icons
 bind("Escape",    shell("session"))                         -- power menu
 bind("L",         shell("lock"))                            -- lock screen
 bind("SHIFT + V", exec("caelestia clipboard"))              -- clipboard history
