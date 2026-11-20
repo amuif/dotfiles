@@ -95,6 +95,9 @@
       "explorer": [
         "nautilus"
       ]
+    },
+    "battery": {
+      "criticalLevel": 5
     }
   },
   "border": {
