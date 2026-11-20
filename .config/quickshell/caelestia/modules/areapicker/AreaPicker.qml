@@ -8,6 +8,8 @@ import qs.components.misc
 import qs.services
 
 Scope {
+    ScreenshotPreview {}
+
     LazyLoader {
         id: root
 

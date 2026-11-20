@@ -116,7 +116,18 @@ StyledRect {
             }
         }
         onClicked: event => {
-            if (!GlobalConfig.notifs.actionOnClick || event.button !== Qt.LeftButton)
+            if (event.button !== Qt.LeftButton)
+                return;
+
+            // Standard freedesktop behaviour: clicking the body triggers the "default" action
+            const defAction = root.modelData.actions.find(a => a.identifier === "default");
+            if (defAction) {
+                defAction.invoke();
+                root.modelData.close();
+                return;
+            }
+
+            if (!GlobalConfig.notifs.actionOnClick)
                 return;
 
             const actions = root.modelData.actions;

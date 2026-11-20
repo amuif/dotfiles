@@ -9,6 +9,7 @@ import Caelestia.I18n
 import qs.components
 import qs.components.effects
 import qs.services
+import qs.utils
 
 MouseArea {
     id: root
@@ -87,7 +88,16 @@ MouseArea {
                 Quickshell.execDetached(["sh", "-c", "wl-copy --type image/png < " + path]);
                 Quickshell.execDetached(["notify-send", "-a", "caelestia-cli", "-i", path, Tr.tr("Screenshot taken"), Tr.tr("Screenshot copied to clipboard")]);
             } else {
-                Quickshell.execDetached(["swappy", "-f", path]);
+                // Copy to clipboard, keep a copy in ~/Pictures/Screenshots, and show a notification.
+                // Clicking the notification opens the preview popup (ScreenshotPreview.qml).
+                const dir = `${Paths.pictures}/Screenshots`;
+                const dest = `${dir}/screenshot_${Qt.formatDateTime(new Date(), "yyyyMMdd_HHmmss_zzz")}.png`;
+                Quickshell.execDetached(["sh", "-c", `
+                    mkdir -p "$2" && mv -f -- "$1" "$3" || exit 1
+                    wl-copy --type image/png < "$3"
+                    action=$(notify-send -a caelestia-cli -i "$3" -A "default=Open" --wait "$4" "$5")
+                    [ "$action" = default ] && [ -f "$3" ] && qs -c caelestia ipc call screenshot preview "$3"
+                `, "sh", path, dir, dest, Tr.tr("Screenshot taken"), Tr.tr("Copied to clipboard · click to preview")]);
             }
             closeAnim.start();
         });
