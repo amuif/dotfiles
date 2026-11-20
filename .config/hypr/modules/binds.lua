@@ -28,7 +28,7 @@ bind("M",         shell("barExpand"))                       -- show bar + extra 
 bind("Z",         shell("toggleBar"))                       -- hide/show the bar
 bind("Escape",    shell("session"))                         -- power menu
 bind("L",         shell("lock"))                            -- lock screen
-bind("SHIFT + V", exec("caelestia clipboard"))              -- clipboard history
+bind("SHIFT + V", shell("clipboard"))                     -- clipboard history (shell popup)
 bind("period",    exec("caelestia emoji -p"))               -- emoji picker
 bind("SHIFT + W", exec("caelestia wallpaper -r"))           -- random wallpaper (re-themes everything)
 bind("SHIFT + C", exec("hyprpicker -a"))                    -- colour picker -> clipboard
