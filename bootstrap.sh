@@ -108,6 +108,8 @@ dotfiles() {
 
   # Defaults: Nautilus for folders, kitty as terminal
   xdg-mime default org.gnome.Nautilus.desktop inode/directory application/x-gnome-saved-search 2>/dev/null || true
+  # RAR: libarchive (Nautilus "Extract Here") lacks RAR VM filters; file-roller uses unrar
+  xdg-mime default org.gnome.FileRoller.desktop application/vnd.rar application/x-rar 2>/dev/null || true
   gsettings set org.gnome.desktop.default-applications.terminal exec kitty 2>/dev/null || true
 
   # Monitor sanity check: hypr/modules/monitors.lua is tuned for a 2560x1440 panel

@@ -15,6 +15,7 @@ dolphin
 dunst
 fastfetch
 ffmpegthumbnailer
+file-roller
 firefox
 fish
 fnm
@@ -80,6 +81,7 @@ telegram-desktop
 ttf-cascadia-code-nerd
 ttf-jetbrains-mono-nerd
 ttf-roboto
+unrar
 unzip
 uwsm
 vim
